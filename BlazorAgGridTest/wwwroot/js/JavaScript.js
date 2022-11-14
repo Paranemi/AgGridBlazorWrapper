@@ -2,21 +2,22 @@
 let rowData = [];
 
 function initGridColumns(field, title, width, resizable, editable, sortable) {
-
     columnDefs.push({ field: field, headerName: title, resizable: resizable, editable: editable, sortable: sortable, });
-    if (title === `Restrierdatum`) {
-        initAgGrid();
-    }
 }
 
 function initAgGridData(json) {
     rowData = JSON.parse(json);
+    setTimeout(() => initAgGrid());
 }
 
 function initAgGrid() {
     const gridOptions = {
         columnDefs: columnDefs,
-        rowData: rowData
+        rowData: rowData,
+        //pagination: true,
+        //paginationPageSize: 20,
+        rowDragManaged: true,
+        animateRows: true,
     };
 
     // setup the grid after the page has finished loading
