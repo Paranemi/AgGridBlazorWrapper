@@ -25,6 +25,6 @@
         var json = JsonSerializer.Serialize(Data);
          json = json.Replace(@"\","");
 
-        await JS.InvokeVoidAsync("initAgGrid", json);
+        await JS.InvokeVoidAsync("initAgGridData", json);
     }
 }

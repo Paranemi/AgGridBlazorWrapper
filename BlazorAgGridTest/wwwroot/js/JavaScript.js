@@ -1,21 +1,25 @@
 ﻿const columnDefs = [];
+let rowData = [];
 
-function initGridColumns(fieldName, title, width, editable, sortable) {
+function initGridColumns(field, title, width, resizable, editable, sortable) {
 
-    columnDefs.push({ field: fieldName, headerName: title, width: width, sortable: sortable, editable: editable, })
+    columnDefs.push({ field: field, headerName: title, resizable: resizable, editable: editable, sortable: sortable, });
+    if (title === `Restrierdatum`) {
+        initAgGrid();
+    }
 }
 
-function initAgGrid(json) {
-    const forecasts = JSON.parse(json);
+function initAgGridData(json) {
+    rowData = JSON.parse(json);
+}
 
+function initAgGrid() {
     const gridOptions = {
         columnDefs: columnDefs,
-        rowData: forecasts
+        rowData: rowData
     };
 
     // setup the grid after the page has finished loading
     const gridDiv = document.querySelector('#myGrid');
     new agGrid.Grid(gridDiv, gridOptions);
 }
-
-
