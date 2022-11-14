@@ -1,0 +1,28 @@
+﻿@inject IJSRuntime JS
+
+@code {
+    [Parameter]
+    public string Field { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string Width { get; set; }
+
+    [Parameter]
+    public bool Resizable { get; set; }
+
+    [Parameter]
+    public bool Editable { get; set; }
+
+    [Parameter]
+    public bool Sortable { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JS.InvokeVoidAsync("initGridColumns", Field, Title, Width, Resizable, Editable, Sortable);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

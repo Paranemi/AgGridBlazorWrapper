@@ -1,0 +1,30 @@
+﻿@using System.Text.Json
+@inject IJSRuntime JS
+@typeparam TItem
+
+@ChildContent
+<div id="myGrid" style="height: @Height; width:@Width;" class="ag-theme-alpine"></div>
+
+@code {
+    [Parameter]
+    public List<TItem> Data { get; set; }
+
+    [Parameter]
+    public string Height { get; set; }
+    
+    [Parameter]
+    public string Width { get; set; }
+
+    [Parameter]
+	public RenderFragment ChildContent { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        var json = JsonSerializer.Serialize(Data);
+         json = json.Replace(@"\","");
+
+        await JS.InvokeVoidAsync("initAgGrid", json);
+    }
+}
