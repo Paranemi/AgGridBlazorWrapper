@@ -30,30 +30,6 @@ else
             <GridColumn Field="@nameof(PeopleModel.Address)" Title="Adresse" Sortable="true" Resizable="true" Editable="true"></GridColumn> 
             <GridColumn Field="@nameof(PeopleModel.Registered)" Title="Restrierdatum" Sortable="false" Resizable="true" Editable="true"></GridColumn> 
     </AgGrid>
-
-
-    <h2>HTML Table</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
 }
 
 @code {
