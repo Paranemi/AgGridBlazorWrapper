@@ -5,17 +5,17 @@ function initGridColumns(field, title, width, resizable, editable, sortable) {
     columnDefs.push({ field: field, headerName: title, resizable: resizable, editable: editable, sortable: sortable, });
 }
 
-function initAgGridData(json) {
+function initAgGridData(json, pageable, pageSize) {
     rowData = JSON.parse(json);
-    setTimeout(() => initAgGrid());
+    setTimeout(() => initAgGrid(pageable, pageSize));
 }
 
-function initAgGrid() {
+function initAgGrid(pageable, pageSize) {
     const gridOptions = {
         columnDefs: columnDefs,
         rowData: rowData,
-        //pagination: true,
-        //paginationPageSize: 20,
+        pagination: pageable,
+        paginationPageSize: pageSize,
         rowDragManaged: true,
         animateRows: true,
     };

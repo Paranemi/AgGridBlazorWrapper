@@ -16,6 +16,12 @@
     public string Width { get; set; }
 
     [Parameter]
+    public bool Pageable { get; set; }
+
+    [Parameter]
+    public int PageSize { get; set; }
+
+    [Parameter]
 	public RenderFragment ChildContent { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -24,6 +30,6 @@
 
         var json = JsonSerializer.Serialize(Data);
 
-        await JS.InvokeVoidAsync("initAgGridData", json);
+        await JS.InvokeVoidAsync("initAgGridData", json, Pageable, PageSize);
     }
 }

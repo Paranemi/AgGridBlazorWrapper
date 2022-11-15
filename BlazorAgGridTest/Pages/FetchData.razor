@@ -20,13 +20,15 @@ else
     <h2>AG Grid</h2>
     <AgGrid Data="@Peoples" 
             Height="800px"
-            Width="60%">
+            Width="60%"
+            Pageable="true"
+            PageSize="20">
 
-            <GridColumn Field="@nameof(PeopleModel.Age)" Title="Alter" Sortable="true" Resizable="false"></GridColumn> 
-            <GridColumn Field="@nameof(PeopleModel.Name)" Title="Name" Sortable="true" Resizable="true"></GridColumn> 
-            <GridColumn Field="@nameof(PeopleModel.Email)" Title="Email" Sortable="true" Resizable="true"></GridColumn> 
-            <GridColumn Field="@nameof(PeopleModel.Address)" Title="Adresse" Sortable="true" Resizable="true"></GridColumn> 
-            <GridColumn Field="@nameof(PeopleModel.Registered)" Title="Restrierdatum" Sortable="false" Resizable="true"></GridColumn> 
+            <GridColumn Field="@nameof(PeopleModel.Age)" Title="Alter" Sortable="true" Resizable="false" Editable="false"></GridColumn> 
+            <GridColumn Field="@nameof(PeopleModel.Name)" Title="Name" Sortable="true" Resizable="true" Editable="true"></GridColumn> 
+            <GridColumn Field="@nameof(PeopleModel.Email)" Title="Email" Sortable="true" Resizable="true" Editable="true"></GridColumn> 
+            <GridColumn Field="@nameof(PeopleModel.Address)" Title="Adresse" Sortable="true" Resizable="true" Editable="true"></GridColumn> 
+            <GridColumn Field="@nameof(PeopleModel.Registered)" Title="Restrierdatum" Sortable="false" Resizable="true" Editable="true"></GridColumn> 
     </AgGrid>
 
 
