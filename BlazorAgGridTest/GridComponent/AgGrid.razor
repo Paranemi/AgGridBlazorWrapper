@@ -22,6 +22,9 @@
     public int PageSize { get; set; }
 
     [Parameter]
+    public bool FullRowEdit { get; set; }
+
+    [Parameter]
     public EventCallback<ValueType> OnEdit { get; set; }
 
     [Parameter]
@@ -35,12 +38,12 @@
 
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("initAgGridRowData", json, Pageable, PageSize, DotNetObjectReference.Create(this));
+            await JS.InvokeVoidAsync("initAgGridRowData", json, Pageable, PageSize, FullRowEdit, DotNetObjectReference.Create(this));
         }
     }
 
     [JSInvokable]
-    public async Task CellEdited(string json)
+    public async Task Edited(string json)
     {
         var dataObject = JsonSerializer.Deserialize<ValueType>(json);
         await OnEdit.InvokeAsync(dataObject);

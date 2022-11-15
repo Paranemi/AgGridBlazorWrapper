@@ -8,13 +8,13 @@ function initGridColumns(field, title, width, resizable, editable, sortable) {
     columnDefs.push({ field: field, headerName: title, resizable: resizable, editable: editable, sortable: sortable, });
 }
 
-function initAgGridRowData(json, pageable, pageSize, dotNetInstance) {
+function initAgGridRowData(json, pageable, pageSize, fullRowEdit, dotNetInstance) {
     _dotNetInstance = dotNetInstance;
     rowData = JSON.parse(json);
-    setTimeout(() => initAgGrid(pageable, pageSize));
+    setTimeout(() => initAgGrid(pageable, pageSize, fullRowEdit));
 }
 
-function initAgGrid(pageable, pageSize) {
+function initAgGrid(pageable, pageSize, fullRowEdit) {
     gridOptions={
         columnDefs: columnDefs,
         rowData: rowData,
@@ -22,9 +22,10 @@ function initAgGrid(pageable, pageSize) {
         paginationPageSize: pageSize,
         rowDragManaged: true,
         animateRows: true,
-        //getRowId: (params) => params.data.id,
-        readOnlyEdit: true,
-        onCellEditRequest: onEdit,
+        editType: fullRowEdit? 'fullRow' : '',
+        onRowValueChanged: fullRowEdit? onRowEdit : null,
+        readOnlyEdit: !fullRowEdit,
+        onCellEditRequest: !fullRowEdit? onCellEdit : null,
     };
 
     // setup the grid after the page has finished loading
@@ -32,14 +33,17 @@ function initAgGrid(pageable, pageSize) {
     new agGrid.Grid(gridDiv, gridOptions);
 }
 
-function onEdit(event) {
+function onRowEdit(event) {
+    var newItem = event.data;
+
+    OnEditCallback(newItem);
+}
+
+function onCellEdit(event) {
     const data = event.data;
     const field = event.colDef.field;
-    const newValue = event.newValue;
     const newItem = { ...data };
     newItem[field] = event.newValue;
-
-    console.log('onCellEditRequest, updating ' + field + ' to ' + newValue);
 
     rowData = rowData.map((oldItem) =>
         oldItem.Id == newItem.Id ? newItem : oldItem
@@ -47,5 +51,9 @@ function onEdit(event) {
 
     gridOptions.api.setRowData(rowData);
 
-    _dotNetInstance.invokeMethodAsync('CellEdited', JSON.stringify(newItem));
+    OnEditCallback(newItem);
+}
+
+function OnEditCallback(newItem) {
+    _dotNetInstance.invokeMethodAsync('Edited', JSON.stringify(newItem));
 }
