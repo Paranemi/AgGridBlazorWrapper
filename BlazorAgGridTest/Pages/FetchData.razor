@@ -22,11 +22,11 @@ else
             FullRowEdit="false"
             OnEdit=@OnEdit>
 
-            <GridColumn Field="@nameof(PeopleModel.Age)" Title="Alter" Sortable="true" Resizable="false" Editable="false"></GridColumn> 
+            <GridColumn Field="@nameof(PeopleModel.Age)" Title="Alter" Sortable="true" Resizable="false" Editable="false" GridCellFormatter="@GridCellFormatter.DecimalsFormatter"></GridColumn> 
             <GridColumn Field="@nameof(PeopleModel.Name)" Title="Name" Sortable="true" Resizable="true" Editable="true"></GridColumn> 
             <GridColumn Field="@nameof(PeopleModel.Email)" Title="Email" Sortable="true" Resizable="true" Editable="true"></GridColumn> 
             <GridColumn Field="@nameof(PeopleModel.Address)" Title="Adresse" Sortable="true" Resizable="true" Editable="true"></GridColumn> 
-            <GridColumn Field="@nameof(PeopleModel.Registered)" Title="Restrierdatum" Sortable="false" Resizable="true" Editable="true"></GridColumn> 
+            <GridColumn Field="@nameof(PeopleModel.Registered)" Title="Registrierdatum" Sortable="false" Resizable="true" Editable="true" GridCellFormatter="@GridCellFormatter.DateFormatter"></GridColumn> 
     </AgGrid>
 
     @if (GridEdited && PeopleTest != null)

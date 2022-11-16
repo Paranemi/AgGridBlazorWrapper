@@ -4,8 +4,8 @@ let rowImmutableStore;
 let gridOptions;
 let _dotNetInstance;
 
-function initGridColumns(field, title, width, resizable, editable, sortable) {
-    columnDefs.push({ field: field, headerName: title, resizable: resizable, editable: editable, sortable: sortable, });
+function initGridColumns(field, title, width, resizable, editable, sortable, valueFormatterId) {
+    columnDefs.push({ field: field, headerName: title, resizable: resizable, editable: editable, sortable: sortable, valueFormatter: this[valueFormatterId]});
 }
 
 function initAgGridRowData(json, pageable, pageSize, fullRowEdit, dotNetInstance) {
@@ -56,4 +56,34 @@ function onCellEdit(event) {
 
 function OnEditCallback(newItem) {
     _dotNetInstance.invokeMethodAsync('Edited', JSON.stringify(newItem));
+}
+
+function DecimalsFormatter(params) {
+    let returnVal = "";
+    try {
+        let num = parseFloat(params.value); 
+        let rounded = num.toFixed(3); 
+        returnVal = rounded;
+    }
+    catch (e) {
+    }
+    return returnVal;
+}
+
+function DateFormatter(params) {
+    let returnVal = "";
+    try {
+        
+        const userLocale =
+            navigator.languages && navigator.languages.length
+                ? navigator.languages[0]
+                : navigator.language;
+        
+        let date = new Date(params.value);
+        let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        returnVal = date.toLocaleDateString(userLocale, options);        
+    }
+    catch (e) {
+    }
+    return returnVal;
 }
