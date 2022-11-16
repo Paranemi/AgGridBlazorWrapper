@@ -15,13 +15,16 @@
 
     [Parameter]
     public bool Editable { get; set; }
+    
+    [Parameter]
+    public string ColumnFilter { get; set; }
 
     [Parameter]
     public bool Sortable { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await JS.InvokeVoidAsync("initGridColumns", Field, Title, Width, Resizable, Editable, Sortable);
+        await JS.InvokeVoidAsync("initGridColumns", Field, Title, Width, Resizable, Editable, ColumnFilter, Sortable);
 
         await base.OnAfterRenderAsync(firstRender);
     }

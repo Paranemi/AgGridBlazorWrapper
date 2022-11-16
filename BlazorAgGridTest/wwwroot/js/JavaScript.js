@@ -1,8 +1,15 @@
 ﻿const columnDefs = [];
 let rowData = [];
 
-function initGridColumns(field, title, width, resizable, editable, sortable) {
-    columnDefs.push({ field: field, headerName: title, resizable: resizable, editable: editable, sortable: sortable, });
+function initGridColumns(field, title, width, resizable, editable, columnFilter, sortable) {
+    columnDefs.push({
+        field: field,
+        headerName: title,
+        resizable: resizable,
+        editable: editable,
+        sortable: sortable,
+        filter: columnFilter,        
+    });
 }
 
 function initAgGridData(json, pageable, pageSize) {
