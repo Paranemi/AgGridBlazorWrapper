@@ -1,17 +1,18 @@
 ﻿@using System.Text.Json
 @inject IJSRuntime JS
-@typeparam TItem
+@typeparam ValueType
+@implements IDisposable
 
 @ChildContent
 <div id="myGrid" style="height: @Height; width:@Width;" class="ag-theme-alpine"></div>
 
 @code {
     [Parameter]
-    public List<TItem> Data { get; set; }
+    public List<ValueType> Data { get; set; }
 
     [Parameter]
     public string Height { get; set; }
-    
+
     [Parameter]
     public string Width { get; set; }
 
@@ -22,7 +23,22 @@
     public int PageSize { get; set; }
 
     [Parameter]
-	public RenderFragment ChildContent { get; set; }
+    public bool FullRowEdit { get; set; }
+
+    [Parameter]
+    public EventCallback<ValueType> OnEdit { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private DotNetObjectReference<AgGrid<ValueType>>? _objReference;
+
+    protected override void OnInitialized()
+    {
+        _objReference = DotNetObjectReference.Create(this);
+
+        base.OnInitialized();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -30,6 +46,21 @@
 
         var json = JsonSerializer.Serialize(Data);
 
-        await JS.InvokeVoidAsync("initAgGridData", json, Pageable, PageSize);
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("initAgGridRowData", json, Pageable, PageSize, FullRowEdit, _objReference);
+        }
+    }
+
+    [JSInvokable]
+    public async Task Edited(string json)
+    {
+        var dataObject = JsonSerializer.Deserialize<ValueType>(json);
+        await OnEdit.InvokeAsync(dataObject);
+    }
+
+    public void Dispose()
+    {
+        _objReference?.Dispose();
     }
 }
