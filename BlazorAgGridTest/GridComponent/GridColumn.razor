@@ -18,10 +18,13 @@
 
     [Parameter]
     public bool Sortable { get; set; }
+    
+    [Parameter]
+    public string GridCellFormatter { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await JS.InvokeVoidAsync("initGridColumns", Field, Title, Width, Resizable, Editable, Sortable);
+        await JS.InvokeVoidAsync("initGridColumns", Field, Title, Width, Resizable, Editable, Sortable, GridCellFormatter);
 
         await base.OnAfterRenderAsync(firstRender);
     }
