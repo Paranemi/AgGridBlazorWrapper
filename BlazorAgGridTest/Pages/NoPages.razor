@@ -1,0 +1,42 @@
+﻿@page "/no-pages"
+
+<PageTitle>Weather forecast</PageTitle>
+
+@using BlazorAgGridTest.Data
+@using Newtonsoft.Json
+
+<h1>Grid (@Peoples?.Count)</h1>
+
+@if (Peoples == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <div class="grid-container">
+        <div class="grid-item">
+
+            <AgGrid Data="@Peoples" Height="100%" Width="100%">
+
+                <GridColumn Field="@nameof(PeopleModel.Age)" Title="Alter" Sortable="true" Resizable="false" Editable="false"></GridColumn> 
+                <GridColumn Field="@nameof(PeopleModel.Name)" Title="Name" Sortable="true" Resizable="true" Editable="true"></GridColumn> 
+                <GridColumn Field="@nameof(PeopleModel.Email)" Title="Email" Sortable="true" Resizable="true" Editable="true"></GridColumn> 
+                <GridColumn Field="@nameof(PeopleModel.Address)" Title="Adresse" Sortable="true" Resizable="true" Editable="true"></GridColumn> 
+                <GridColumn Field="@nameof(PeopleModel.Registered)" Title="Registrierdatum" Sortable="false" Resizable="true" Editable="true" ColumnFilter="@ColumnFilter.AgDateColumnFilter" IsDate="true"></GridColumn>
+            </AgGrid>
+        </div>
+    </div>
+}
+
+@code {
+    public List<PeopleModel>? Peoples { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var json = File.ReadAllText("Data/PeopleData.txt");
+        Peoples = JsonConvert.DeserializeObject<List<PeopleModel>>(json);
+    }
+
+}
