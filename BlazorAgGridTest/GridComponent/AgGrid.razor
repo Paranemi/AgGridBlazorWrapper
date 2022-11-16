@@ -1,6 +1,7 @@
 ﻿@using System.Text.Json
 @inject IJSRuntime JS
 @typeparam ValueType
+@implements IDisposable
 
 @ChildContent
 <div id="myGrid" style="height: @Height; width:@Width;" class="ag-theme-alpine"></div>
@@ -28,7 +29,16 @@
     public EventCallback<ValueType> OnEdit { get; set; }
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    public RenderFragment? ChildContent { get; set; }
+
+    private DotNetObjectReference<AgGrid<ValueType>>? _objReference;
+
+    protected override void OnInitialized()
+    {
+        _objReference = DotNetObjectReference.Create(this);
+
+        base.OnInitialized();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -38,7 +48,7 @@
 
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("initAgGridRowData", json, Pageable, PageSize, FullRowEdit, DotNetObjectReference.Create(this));
+            await JS.InvokeVoidAsync("initAgGridRowData", json, Pageable, PageSize, FullRowEdit, _objReference);
         }
     }
 
@@ -47,5 +57,10 @@
     {
         var dataObject = JsonSerializer.Deserialize<ValueType>(json);
         await OnEdit.InvokeAsync(dataObject);
+    }
+
+    public void Dispose()
+    {
+        _objReference?.Dispose();
     }
 }
