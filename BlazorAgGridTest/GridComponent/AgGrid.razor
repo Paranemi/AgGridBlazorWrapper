@@ -1,7 +1,7 @@
 ﻿@using System.Text.Json
 @inject IJSRuntime JS
 @typeparam ValueType
-@implements IDisposable
+@implements IAsyncDisposable
 
 @ChildContent
 <div id="myGrid" style="height: @Height; width:@Width;" class="ag-theme-alpine"></div>
@@ -59,8 +59,9 @@
         await OnEdit.InvokeAsync(dataObject);
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
+        await JS.InvokeVoidAsync("dispose");
         _objReference?.Dispose();
     }
 }

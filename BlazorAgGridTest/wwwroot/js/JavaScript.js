@@ -1,8 +1,9 @@
-﻿const columnDefs = [];
+﻿let columnDefs = [];
 let rowData = [];
 let rowImmutableStore;
 let gridOptions;
 let _dotNetInstance;
+let inputData;
 
 function initGridColumns(field, title, width, resizable, editable, sortable, valueFormatterId) {
     columnDefs.push({ field: field, headerName: title, resizable: resizable, editable: editable, sortable: sortable, valueFormatter: this[valueFormatterId]});
@@ -22,6 +23,7 @@ function initAgGrid(pageable, pageSize, fullRowEdit) {
         paginationPageSize: pageSize,
         rowDragManaged: true,
         animateRows: true,
+        pinnedToTopRowData: [inputData],
         editType: fullRowEdit? 'fullRow' : '',
         onRowValueChanged: fullRowEdit? onRowEdit : null,
         readOnlyEdit: !fullRowEdit,
@@ -31,12 +33,14 @@ function initAgGrid(pageable, pageSize, fullRowEdit) {
     // setup the grid after the page has finished loading
     const gridDiv = document.querySelector('#myGrid');
     new agGrid.Grid(gridDiv, gridOptions);
+
+    gridOptions.api.setPinnedTopRowData([inputData]);
 }
 
 function onRowEdit(event) {
     var newItem = event.data;
 
-    OnEditCallback(newItem);
+    onEditCallback(newItem);
 }
 
 function onCellEdit(event) {
@@ -51,10 +55,10 @@ function onCellEdit(event) {
 
     gridOptions.api.setRowData(rowData);
 
-    OnEditCallback(newItem);
+    onEditCallback(newItem);
 }
 
-function OnEditCallback(newItem) {
+function onEditCallback(newItem) {
     _dotNetInstance.invokeMethodAsync('Edited', JSON.stringify(newItem));
 }
 
@@ -86,4 +90,9 @@ function DateFormatter(params) {
     catch (e) {
     }
     return returnVal;
+}
+
+function dispose() {
+    columnDefs = [];
+    rowData = [];
 }
