@@ -4,6 +4,7 @@ let rowImmutableStore;
 let gridOptions;
 let _dotNetInstance;
 
+
 function initGridColumns(field, title, width, resizable, editable, columnFilter, sortable, valueFormatterId) {
     columnDefs.push({
         field: field,
@@ -12,7 +13,7 @@ function initGridColumns(field, title, width, resizable, editable, columnFilter,
         editable: editable,
         filter: columnFilter,
         sortable: sortable,
-        valueFormatter: this[valueFormatterId]
+        valueFormatter: this[valueFormatterId],
     });
 }
 
@@ -23,17 +24,17 @@ function initAgGridRowData(json, pageable, pageSize, fullRowEdit, dotNetInstance
 }
 
 function initAgGrid(pageable, pageSize, fullRowEdit) {
-    gridOptions={
+    gridOptions = {
         columnDefs: columnDefs,
         rowData: rowData,
         pagination: pageable,
         paginationPageSize: pageSize,
         rowDragManaged: true,
         animateRows: true,
-        editType: fullRowEdit? 'fullRow' : '',
-        onRowValueChanged: fullRowEdit? onRowEdit : null,
+        editType: fullRowEdit ? 'fullRow' : '',
+        onRowValueChanged: fullRowEdit ? onRowEdit : null,
         readOnlyEdit: !fullRowEdit,
-        onCellEditRequest: !fullRowEdit? onCellEdit : null,
+        onCellEditRequest: !fullRowEdit ? onCellEdit : null,
     };
 
     // setup the grid after the page has finished loading
@@ -69,11 +70,10 @@ function OnEditCallback(newItem) {
 function DecimalsFormatter(params) {
     let returnVal = "";
     try {
-        let num = parseFloat(params.value); 
-        let rounded = num.toFixed(3); 
+        let num = parseFloat(params.value);
+        let rounded = num.toFixed(3);
         returnVal = rounded;
-    }
-    catch (e) {
+    } catch (e) {
     }
     return returnVal;
 }
@@ -81,17 +81,16 @@ function DecimalsFormatter(params) {
 function DateFormatter(params) {
     let returnVal = "";
     try {
-        
+
         const userLocale =
             navigator.languages && navigator.languages.length
                 ? navigator.languages[0]
                 : navigator.language;
-        
+
         let date = new Date(params.value);
         let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        returnVal = date.toLocaleDateString(userLocale, options);        
-    }
-    catch (e) {
+        returnVal = date.toLocaleDateString(userLocale, options);
+    } catch (e) {
     }
     return returnVal;
 }
