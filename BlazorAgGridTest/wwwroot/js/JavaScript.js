@@ -6,7 +6,14 @@ let _dotNetInstance;
 let inputData;
 
 function initGridColumns(field, title, width, resizable, editable, sortable, valueFormatterId) {
-    columnDefs.push({ field: field, headerName: title, resizable: resizable, editable: editable, sortable: sortable, valueFormatter: this[valueFormatterId]});
+    columnDefs.push({
+        field: field,
+        headerName: title,
+        resizable: resizable,
+        editable: editable,
+        sortable: sortable,
+        valueFormatter: this[valueFormatterId],
+    });
 }
 
 function initAgGridRowData(json, pageable, pageSize, fullRowEdit, dotNetInstance) {
@@ -59,6 +66,10 @@ function createPinnedCellPlaceholder({ colDef }) {
 }
 
 function onRowEdit(event) {
+    if (!validateInputType(typeof event.oldValue, typeof event.newValue)) {
+        return;
+    }
+
     var newItem = event.data;
 
     onEditCallback(newItem);
@@ -70,6 +81,10 @@ function onCellEdit(event) {
     const newItem = { ...data };
     newItem[field] = event.newValue;
 
+    if (!validateInputType(typeof event.oldValue, typeof event.newValue)) {
+        return;
+    }
+
     rowData = rowData.map((oldItem) =>
         oldItem.Id == newItem.Id ? newItem : oldItem
     );
@@ -77,6 +92,15 @@ function onCellEdit(event) {
     gridOptions.api.setRowData(rowData);
 
     onEditCallback(newItem);
+}
+
+function validateInputType(valueType, inputType) {
+    if (valueType === inputType) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 function onEditCallback(newItem) {
