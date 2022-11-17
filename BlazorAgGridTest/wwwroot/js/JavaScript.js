@@ -23,7 +23,15 @@ function initAgGrid(pageable, pageSize, fullRowEdit) {
         paginationPageSize: pageSize,
         rowDragManaged: true,
         animateRows: true,
-        pinnedToTopRowData: [inputData],
+        pinnedTopRowData: [inputData],
+        defaultColDef: {
+            flex: 1,
+            editable: true,
+            valueFormatter: (params) =>
+                isEmptyPinnedCell(params) ?
+                    createPinnedCellPlaceholder(params)
+                    : undefined,
+        },
         editType: fullRowEdit? 'fullRow' : '',
         onRowValueChanged: fullRowEdit? onRowEdit : null,
         readOnlyEdit: !fullRowEdit,
@@ -35,6 +43,17 @@ function initAgGrid(pageable, pageSize, fullRowEdit) {
     new agGrid.Grid(gridDiv, gridOptions);
 
     gridOptions.api.setPinnedTopRowData([inputData]);
+}
+
+function isEmptyPinnedCell({ node, value }) {
+    return (
+        (node.rowPinned === 'top' && value == null) ||
+        (node.rowPinned === 'top' && value == '')
+    );
+}
+
+function createPinnedCellPlaceholder({ colDef }) {
+    return colDef.field[0].toUpperCase() + colDef.field.slice(1) + '...';
 }
 
 function onRowEdit(event) {
