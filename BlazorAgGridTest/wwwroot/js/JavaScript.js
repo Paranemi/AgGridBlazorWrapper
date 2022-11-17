@@ -23,6 +23,7 @@ function initAgGrid(pageable, pageSize, fullRowEdit) {
         paginationPageSize: pageSize,
         rowDragManaged: true,
         animateRows: true,
+        //input row
         pinnedTopRowData: [inputData],
         defaultColDef: {
             flex: 1,
@@ -32,6 +33,7 @@ function initAgGrid(pageable, pageSize, fullRowEdit) {
                     createPinnedCellPlaceholder(params)
                     : undefined,
         },
+        // edit options
         editType: fullRowEdit? 'fullRow' : '',
         onRowValueChanged: fullRowEdit? onRowEdit : null,
         readOnlyEdit: !fullRowEdit,
