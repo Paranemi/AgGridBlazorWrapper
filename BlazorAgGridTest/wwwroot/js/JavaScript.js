@@ -4,8 +4,16 @@ let rowImmutableStore;
 let gridOptions;
 let _dotNetInstance;
 
-function initGridColumns(field, title, width, resizable, editable, sortable, valueFormatterId) {
-    columnDefs.push({ field: field, headerName: title, resizable: resizable, editable: editable, sortable: sortable, valueFormatter: this[valueFormatterId]});
+function initGridColumns(field, title, width, resizable, editable, columnFilter, sortable, valueFormatterId) {
+    columnDefs.push({
+        field: field,
+        headerName: title,
+        resizable: resizable,
+        editable: editable,
+        filter: columnFilter,
+        sortable: sortable,
+        valueFormatter: this[valueFormatterId]
+    });
 }
 
 function initAgGridRowData(json, pageable, pageSize, fullRowEdit, dotNetInstance) {
