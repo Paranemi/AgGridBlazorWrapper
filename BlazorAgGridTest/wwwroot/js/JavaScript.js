@@ -1,4 +1,4 @@
-﻿const columnDefs = [];
+﻿let columnDefs = [];
 let rowData = [];
 let rowImmutableStore;
 let gridOptions;
@@ -20,6 +20,7 @@ function initGridColumns(field, title, width, resizable, editable, columnFilter,
 function initAgGridRowData(json, pageable, pageSize, fullRowEdit, dotNetInstance) {
     _dotNetInstance = dotNetInstance;
     rowData = JSON.parse(json);
+    columnDefs = [];
     setTimeout(() => initAgGrid(pageable, pageSize, fullRowEdit));
 }
 
