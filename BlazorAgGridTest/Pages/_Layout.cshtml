@@ -13,17 +13,20 @@
     <link href="BlazorAgGridTest.styles.css" rel="stylesheet" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 
-    <script src="js/JavaScript.js"></script>
+    <script src="js/site.js"></script>
 
     <!-- Ag Grid -->
     <!-- Include the JS for AG Grid -->
-    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-enterprise/dist/ag-grid-enterprise.min.noStyle.js"></script>
     <!-- Include the core CSS, this is needed by the grid -->
     <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css"/>
+          href="https://cdn.jsdelivr.net/npm/ag-grid-enterprise/styles/ag-grid.css" />
     <!-- Include the theme CSS, only need to import the theme you are going to use -->
     <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-alpine.css"/>
+          href="https://cdn.jsdelivr.net/npm/ag-grid-enterprise/styles/ag-theme-alpine.css"/>
+    
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/ag-grid-enterprise/styles/ag-theme-material.min.css" />
 </head>
 <body>
     @RenderBody()
