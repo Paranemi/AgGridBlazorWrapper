@@ -5,6 +5,7 @@
 @using BlazorAgGridTest.Data
 @using Newtonsoft.Json
 @inject WeatherForecastService ForecastService
+@inject IJSRuntime JS
 
 @if (Peoples == null)
 {
@@ -52,6 +53,11 @@ else
     {
         var json = File.ReadAllText("Data/PeopleData.txt");
         Peoples = JsonConvert.DeserializeObject<List<PeopleModel>>(json);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JS.InvokeVoidAsync("loadJs", "./js/JavaScript.js");
     }
 
     protected void OnEdit(PeopleModel peopleModel)
