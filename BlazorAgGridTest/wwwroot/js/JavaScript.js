@@ -36,14 +36,14 @@ function initAgGrid(pageable, pageSize, fullRowEdit) {
         pinnedTopRowData: [inputData],
         defaultColDef: {
             flex: 1,
-            editable: true,
+            editable: (params) => isEmptyPinnedCell(params),
             valueFormatter: (params) =>
                 isEmptyPinnedCell(params) ?
                     createPinnedCellPlaceholder(params)
                     : undefined,
         },
         // edit options
-        editType: fullRowEdit? 'fullRow' : '',
+        editType: (params) => isEmptyPinnedCell(params)? 'fullRow' : '',
         onRowValueChanged: fullRowEdit? onRowEdit : null,
         readOnlyEdit: !fullRowEdit,
         onCellEditRequest: !fullRowEdit ? onCellEdit : null,
